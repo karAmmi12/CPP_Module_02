@@ -6,7 +6,7 @@
 /*   By: kammi <kammi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 11:52:37 by kammi             #+#    #+#             */
-/*   Updated: 2024/10/23 16:36:08 by kammi            ###   ########.fr       */
+/*   Updated: 2024/11/16 17:56:06 by kammi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,17 +114,36 @@ Fixed	Fixed::operator-(Fixed const &o) const
 	return result;
 }
 
-Fixed	Fixed::operator*(Fixed const &o) const
+// Fixed	Fixed::operator*(Fixed const &o) const
+// {
+// 	Fixed	result;
+// 	result.setRawBits((float)(this->_value) / (1 << this->_fractionalBits) * o._value);
+// 	return result;
+// }
+
+// Fixed	Fixed::operator/(Fixed const &o) const
+// {
+// 	Fixed result;
+// 	result.setRawBits((this->_value << this->_fractionalBits) / o._value);
+// 	return result;
+// }
+
+Fixed Fixed::operator*(Fixed const &o) const
 {
-	Fixed	result;
-	result.setRawBits((float)(this->_value) / (1 << this->_fractionalBits) * o._value);
+	Fixed result;
+	result.setRawBits((this->_value * o._value) >> _fractionalBits);
 	return result;
 }
 
 Fixed	Fixed::operator/(Fixed const &o) const
 {
-	Fixed result;
-	result.setRawBits((this->_value << this->_fractionalBits) / o._value);
+	Fixed	result;
+	if (!o._value)
+	{
+		std::cout << "Error: Division by zero" << std::endl;
+		//return Fixed();
+	}
+	result.setRawBits((this->_value << _fractionalBits) / o._value);
 	return result;
 }
 
